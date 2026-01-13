@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // -----------------------------------------------------------
 // BLOCKCHAIN AND WEB3 SETUP
 // -----------------------------------------------------------
-const SEPOLIA_RPC = "https://sepolia.infura.io/v3/4e130bcef4ae4cfb9024c2a3b27b7175";
+const SEPOLIA_RPC = process.env.RPC_URL;
 // Initialize Web3 instance
 const web3 = new Web3(SEPOLIA_RPC);
 // !!! DEPLOYMENT DETAILS - IMPORTANT: Update these based on your deployed contract !!!
