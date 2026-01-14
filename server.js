@@ -211,7 +211,7 @@ app.post('/api/admin/issue-certificate', upload.fields([{ name: 'pdfFile', maxCo
   data: txData,
   gas: gasEstimate,
 
-  // ✅ EIP-1559 gas (FIXES revert error)
+  //  EIP-1559 gas (FIXES revert error)
   maxFeePerGas: web3.utils.toWei('3', 'gwei'),
   maxPriorityFeePerGas: web3.utils.toWei('2', 'gwei')
 };
@@ -237,7 +237,7 @@ const photoPublicPath = path.relative(
   photoPath
 );
 
-// ✅ save immediately (no receipt)
+//  save immediately (no receipt)
 studentDB[studentId].certificates.push({
   certificateHash: certHash,
   pdfFilePath: `/${pdfPublicPath.replace(/\\/g, '/')}`,
@@ -249,7 +249,7 @@ studentDB[studentId].certificates.push({
 
 saveStudents();
 
-// ✅ respond ONCE and END
+//  respond ONCE and END
 return res.json({
   success: true,
   message: 'Certificate submitted to blockchain (confirmation pending)',
@@ -433,9 +433,6 @@ app.post('/api/verifier/verify-hash', async (req, res) => {
 // -----------------------------------------------------------
 // START SERVER
 // -----------------------------------------------------------
-app.get('/', (req, res) => {
-    res.send('Blockchain Certificate Verification Server is running 🚀');
-});
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     console.log(`Public files served from: ${path.join(__dirname, 'public')}`);

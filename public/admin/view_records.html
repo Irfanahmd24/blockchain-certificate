@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Records - Certificate Chain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: #0d9488; /* Fallback */
+            background-image: linear-gradient(to right bottom, #06b6d4, #22c55e); 
+        }
+        /* Custom scrollbar for better aesthetics in dark mode */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0e7490; }
+        ::-webkit-scrollbar-thumb { background: #67e8f9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a5f3fc; }
+
+        /* New: Gradient background for the records container */
+        #records-container {
+            background-image: linear-gradient(to right bottom, #6366f1, #ec4899); /* Blue to Pink gradient */
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white flex flex-col">
+
+    <header class="bg-white/10 backdrop-blur-md p-4 border-b border-white/20 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="admin_dashboard.html" class="flex items-center space-x-2 text-white/80 hover:text-white transition duration-150">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span class="font-semibold hidden sm:block">Back to Dashboard</span>
+            </a>
+            <h1 class="text-2xl font-bold text-white">All Student Records</h1>
+            <div></div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 py-12">
+        <div id="loading" class="text-center p-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+            <p class="mt-4">Fetching records...</p>
+        </div>
+
+        <div id="records-container" class="hidden overflow-x-auto backdrop-blur-md rounded-lg border border-white/20 shadow-xl">
+            <table class="min-w-full divide-y divide-white/20">
+                <thead class="bg-black/30">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Student Name</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Roll Number</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Department</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Certificates Issued</th>
+                    </tr>
+                </thead>
+                <tbody id="records-table-body" class="divide-y divide-white/20">
+                    </tbody>
+            </table>
+        </div>
+        <div id="no-records" class="hidden text-center text-white/70 mt-8">No student records found.</div>
+    </main>
+
+    <footer class="py-8 text-center text-white/60">
+        © 2025 Certificate Chain | Admin Access
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const loadingDiv = document.getElementById('loading');
+            const container = document.getElementById('records-container');
+            const tableBody = document.getElementById('records-table-body');
+            const noRecordsDiv = document.getElementById('no-records');
+
+            try {
+                const response = await fetch('/api/admin/all-records');
+                const result = await response.json();
+
+                if (result.success && result.records.length > 0) {
+                    tableBody.innerHTML = ''; // Clear any placeholder content
+                    result.records.forEach(student => {
+                        const certificatesHtml = student.certificates.map(cert => `
+                            <div class="mt-2 p-2 rounded bg-white/10 text-xs">
+                                <strong class="text-cyan-300">Hash:</strong> 
+                                <code class="break-all">${cert.certificateHash.substring(0, 20)}...</code>
+                                <div class="mt-1">
+                                    <a href="${cert.pdfFilePath}" target="_blank" class="text-pink-200 hover:underline">View PDF</a> | 
+                                    <a href="${cert.photoFilePath}" target="_blank" class="text-pink-200 hover:underline">View Photo</a>
+                                </div>
+                            </div>
+                        `).join('') || '<span class="text-xs text-white/60">No certificates issued.</span>';
+
+                        const row = `
+                            <tr class="hover:bg-black/10">
+                                <td class="px-6 py-4 whitespace-nowrap">${student.studentName}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${student.rollNumber}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">${student.department}</td>
+                                <td class="px-6 py-4">${certificatesHtml}</td>
+                            </tr>
+                        `;
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                    container.classList.remove('hidden');
+                } else {
+                    noRecordsDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Failed to fetch records:', error);
+                noRecordsDiv.textContent = 'Error: Could not connect to the server to fetch records.';
+                noRecordsDiv.classList.remove('hidden');
+            } finally {
+                loadingDiv.classList.add('hidden');
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

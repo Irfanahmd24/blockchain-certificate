@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Certificate Chain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: #0d9488; /* Fallback */
+            background-image: linear-gradient(to right bottom, #06b6d4, #22c55e); 
+        }
+        .cert-card {
+            background-image: linear-gradient(to right bottom, #6366f1, #ec4899);
+        }
+        .logout-button {
+            background-image: linear-gradient(to right, #ec4899, #f97316);
+        }
+        .cert-grid {
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        }
+        .modal {
+            position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.75);
+            display: flex; justify-content: center; align-items: center; z-index: 50;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s ease;
+        }
+        .modal.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            padding: 1rem; border-radius: 0.75rem; max-width: 90%; max-height: 90%;
+            position: relative; transform: scale(0.95); transition: transform 0.3s ease;
+        }
+        .modal.show .modal-content { transform: scale(1); }
+        .modal-photo {
+            max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 0.5rem;
+        }
+        .modal-close-button {
+            position: absolute; top: -1rem; right: -1rem; width: 2.5rem; height: 2.5rem;
+            border-radius: 9999px; background-color: white; color: black; border: none;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white flex flex-col">
+
+    <header class="bg-white/10 backdrop-blur-md p-4 border-b border-white/20 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white">My Digital Certificates</h1>
+            <div class="flex items-center space-x-4">
+                <span id="user-info" class="text-sm font-medium hidden sm:block">Loading...</span>
+                <button id="logout-button" class="logout-button px-4 py-2 text-white rounded-lg hover:opacity-90 transition duration-150 shadow-md flex items-center gap-2">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto w-full p-6 py-12">
+        <h2 class="text-3xl font-extrabold text-white mb-8 border-b-2 border-white/20 pb-4 flex items-center gap-3">
+            <i data-lucide="award" class="w-8 h-8"></i> Issued Certificates
+        </h2>
+        <div id="statusMessage" class="hidden p-4 rounded-lg text-sm mb-4 text-center font-semibold"></div>
+        <div id="certificates-container" class="grid cert-grid gap-8">
+        </div>
+    </main>
+    
+    <div id="photoModal" class="modal" onclick="closeModal('photoModal')">
+        <div class="modal-content bg-white" onclick="event.stopPropagation()">
+            <button class="modal-close-button" onclick="closeModal('photoModal')"><i data-lucide="x"></i></button>
+            <img id="modalPhoto" src="" alt="Student Photo" class="modal-photo">
+        </div>
+    </div>
+    
+    <div id="qrModal" class="modal" onclick="closeModal('qrModal')">
+        <div class="modal-content bg-slate-800/80 backdrop-blur-md border border-white/20 text-center" onclick="event.stopPropagation()">
+             <button class="modal-close-button bg-slate-800 text-white" onclick="closeModal('qrModal')"><i data-lucide="x"></i></button>
+             <h3 id="qrModalTitle" class="text-xl font-bold text-white mb-4 border-b border-white/20 pb-2">QR Code</h3>
+             <div class="flex justify-center bg-white p-4 rounded-lg">
+                <img id="modalQrCode" src="" alt="Verification QR Code" class="w-48 h-48" />
+             </div>
+             <div class="mt-4">
+                <a id="downloadQrLink" href="#" download="qr-code.png" class="inline-flex items-center justify-center px-4 py-2 bg-pink-500 text-white font-semibold rounded-lg hover:bg-pink-600 transition">
+                    <i data-lucide="download-cloud" class="w-4 h-4 mr-2"></i>
+                    Download QR
+                </a>
+             </div>
+        </div>
+    </div>
+    <footer class="py-8 text-center text-white/60">
+        © 2025 Certificate Chain | Secure Student Portal
+    </footer>
+
+    <script>
+        window.onload = () => { if (typeof lucide !== 'undefined') lucide.createIcons(); };
+
+        const userInfo = document.getElementById('user-info');
+        const logoutButton = document.getElementById('logout-button');
+        const certificatesContainer = document.getElementById('certificates-container');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // START: MODIFIED OPENMODAL FUNCTION
+        function openModal(modalId, ...args) {
+            const modal = document.getElementById(modalId);
+            if (modalId === 'photoModal') {
+                document.getElementById('modalPhoto').src = args[0];
+            }
+            if (modalId === 'qrModal') {
+                const qrCodePath = args[0];
+                const studentName = args[1];
+                document.getElementById('modalQrCode').src = qrCodePath;
+                document.getElementById('qrModalTitle').textContent = `QR Code for ${studentName}`;
+                
+                // Set the href and download attribute for the new download button
+                const downloadLink = document.getElementById('downloadQrLink');
+                downloadLink.href = qrCodePath;
+                downloadLink.download = `QRCode_${studentName.replace(/ /g, '_')}.png`;
+            }
+            modal.classList.add('show');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+        // END: MODIFIED OPENMODAL FUNCTION
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function showStatus(message, isSuccess) {
+            statusMessage.textContent = message;
+            statusMessage.className = `p-4 rounded-lg text-sm mb-4 text-center font-semibold ${isSuccess ? 'bg-green-500/30 border border-green-400' : 'bg-red-500/30 border border-red-400'}`;
+        }
+
+        function renderCertificateCard(cert) {
+            const card = document.createElement('div');
+            card.className = 'cert-card rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-white/20';
+            card.innerHTML = `
+                <div class="p-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">${cert.name}</h3>
+                            <p class="text-sm text-white/70 font-medium">${cert.department} - Class of ${cert.yearOfPass}</p>
+                        </div>
+                        <span class="text-xs font-semibold text-green-900 px-3 py-1 bg-green-300 rounded-full">VALID</span>
+                    </div>
+                    <div class="space-y-2 text-sm mt-6">
+                        <div class="flex justify-between border-t border-white/20 pt-3">
+                            <span class="text-white/70">Result Class:</span>
+                            <span class="font-semibold">${cert.studentClass}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-white/70">Percentage/CGPA:</span>
+                            <span class="font-bold">${cert.percentage}</span>
+                        </div>
+                        <div class="flex justify-between text-xs pt-3 border-t border-white/20">
+                            <span class="text-white/50">Certificate Hash:</span>
+                            <code class="text-pink-200 truncate max-w-[150px]">${cert.id.substring(0, 10)}...</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-black/20 p-4 flex justify-between space-x-3">
+                    <a href="${cert.pdfDownloadUrl}" target="_blank" class="w-1/3 flex items-center justify-center text-sm px-3 py-2 bg-white/90 text-blue-900 font-semibold rounded-lg hover:bg-white transition-colors">
+                        <i data-lucide="download" class="w-4 h-4 mr-2"></i> PDF
+                    </a>
+                    <button onclick="openModal('photoModal', '${cert.photoFilePath}')" class="w-1/3 flex items-center justify-center text-sm px-3 py-2 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-colors">
+                        <i data-lucide="user" class="w-4 h-4 mr-2"></i> Photo
+                    </button>
+                    <button onclick="openModal('qrModal', '${cert.qrCodePath}', '${cert.name}')" class="w-1/3 flex items-center justify-center text-sm px-3 py-2 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-colors">
+                        <i data-lucide="qr-code" class="w-4 h-4 mr-2"></i> QR Code
+                    </button>
+                </div>
+            `;
+            certificatesContainer.appendChild(card);
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        async function fetchCertificates(rollNumber) {
+            userInfo.textContent = `Roll No: ${rollNumber} | Fetching...`;
+            try {
+                const response = await fetch(`/api/student/certificates/${rollNumber}`);
+                const result = await response.json();
+                if (result.success && result.certificates.length > 0) {
+                    result.certificates.forEach(renderCertificateCard);
+                    userInfo.textContent = `${result.certificates[0].name} | ${rollNumber}`;
+                } else {
+                    showStatus('No certificates found for this account.', false);
+                }
+            } catch (error) {
+                console.error('Certificate fetch error:', error);
+                showStatus('Failed to connect to the server.', false);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const rollNumber = sessionStorage.getItem('studentRollNumber');
+            if (!rollNumber) {
+                window.location.href = 'login.html';
+                return;
+            }
+            fetchCertificates(rollNumber);
+        });
+
+        logoutButton.addEventListener('click', () => {
+            sessionStorage.removeItem('studentRollNumber'); 
+            window.location.href = '/index.html'; 
+        });
+    </script>
+</body>
+</html>

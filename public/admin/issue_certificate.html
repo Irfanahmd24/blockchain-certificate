@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Certificate - Certificate Chain</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: #0d9488; /* Fallback */
+            background-image: linear-gradient(to right bottom, #06b6d4, #22c55e); 
+        }
+        .form-card {
+            background-image: linear-gradient(to right bottom, #6366f1, #ec4899); /* Blue to Pink gradient */
+        }
+        .issue-button {
+            background-image: linear-gradient(to right, #ec4899, #f97316); /* Pink to Orange gradient */
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white flex flex-col">
+
+    <header class="bg-white/10 backdrop-blur-md p-4 border-b border-white/20 sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="admin_dashboard.html" class="flex items-center space-x-2 text-white/80 hover:text-white transition duration-150">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                <span class="font-semibold hidden sm:block">Back to Dashboard</span>
+            </a>
+            <h1 class="text-xl font-bold text-white">Issue New Certificate</h1>
+            <div></div> </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="form-card p-8 rounded-2xl shadow-2xl max-w-2xl w-full text-white">
+            <h2 class="text-3xl font-bold mb-6 text-center">Certificate Details</h2>
+            
+            <div id="statusMessage" class="hidden p-3 rounded-lg text-center font-semibold transition-all duration-300 mb-6"></div>
+
+            <form id="issueCertificateForm" class="space-y-6" enctype="multipart/form-data">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="studentName" class="block text-sm font-medium text-white/80 mb-1">Student Name</label>
+                        <input type="text" id="studentName" name="studentName" required class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white/50" placeholder="e.g., Jane Doe">
+                    </div>
+                    <div>
+                        <label for="studentId" class="block text-sm font-medium text-white/80 mb-1">Student ID / Roll Number</label>
+                        <input type="text" id="studentId" name="studentId" required class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white/50" placeholder="e.g., 20CS1001">
+                    </div>
+                    <div>
+                        <label for="department" class="block text-sm font-medium text-white/80 mb-1">Department</label>
+                        <input type="text" id="department" name="department" required class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white/50" placeholder="e.g., ECE">
+                    </div>
+                    <div>
+                        <label for="percentage" class="block text-sm font-medium text-white/80 mb-1">Percentage / GPA</label>
+                        <input type="text" id="percentage" name="percentage" required class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white/50" placeholder="e.g., 9.2 or 92.5%">
+                    </div>
+                    <div>
+                        <label for="yearOfPass" class="block text-sm font-medium text-white/80 mb-1">Year of Passing</label>
+                        <input type="number" id="yearOfPass" name="yearOfPass" required min="1950" max="2099" class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white/50" placeholder="e.g., 2024">
+                    </div>
+                    <div>
+                        <label for="studentClass" class="block text-sm font-medium text-white/80 mb-1">Class / Division</label>
+                        <input type="text" id="studentClass" name="studentClass" required class="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-white placeholder-white/50" placeholder="e.g., First Class">
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-white/20 space-y-4">
+                    <div>
+                        <label for="pdfFile" class="block text-sm font-medium text-white/80 mb-2">Certificate PDF File <span class="text-pink-200">(REQUIRED)</span></label>
+                        <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" required class="w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-100 file:text-pink-800 hover:file:bg-pink-200 transition duration-150">
+                    </div>
+                    <div>
+                        <label for="studentPhoto" class="block text-sm font-medium text-white/80 mb-2">Student Photo <span class="text-pink-200">(REQUIRED)</span></label>
+                        <input type="file" id="studentPhoto" name="studentPhoto" accept="image/*" required class="w-full text-sm text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-100 file:text-pink-800 hover:file:bg-pink-200 transition duration-150">
+                    </div>
+                </div>
+
+                <button type="submit" id="submitButton" class="issue-button w-full flex items-center justify-center px-6 py-3 mt-4 border border-transparent text-base font-bold rounded-lg shadow-lg text-white hover:opacity-90 transition duration-200">
+                    <span id="buttonText">Issue Certificate & Register Hash</span>
+                    <i id="loadingSpinner" data-lucide="loader-circle" class="hidden w-5 h-5 ml-2 animate-spin"></i>
+                </button>
+            </form>
+
+            <div id="resultsDiv" class="hidden mt-10 p-6 bg-black/20 backdrop-blur-md border border-white/20 rounded-xl space-y-3">
+                <h3 class="text-xl font-bold text-green-300">Issuance Successful!</h3>
+                <p class="text-sm text-white/80">The certificate has been registered on the blockchain.</p>
+                <div>
+                    <strong class="text-white/90 block">Certificate Hash (ID):</strong>
+                    <code id="resultHash" class="break-all text-xs text-green-200 bg-green-900/50 p-2 rounded-lg inline-block w-full"></code>
+                </div>
+                <div>
+                    <strong class="text-white/90 block">Transaction Hash:</strong>
+                    <code id="resultTxHash" class="break-all text-xs text-green-200 bg-green-900/50 p-2 rounded-lg inline-block w-full"></code>
+                </div>
+                <div id="qrCodeContainer" class="mt-4 flex justify-center p-4 bg-white rounded-lg"></div>
+            </div>
+            </div>
+    </main>
+
+    <footer class="py-8 text-center text-white/60">
+        © 2025 Certificate Chain | Admin Access
+    </footer>
+
+    <script>
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        };
+
+        // DOM element references
+        const form = document.getElementById('issueCertificateForm');
+        const statusMessage = document.getElementById('statusMessage');
+        const submitButton = document.getElementById('submitButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const resultsDiv = document.getElementById('resultsDiv');
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+
+        // START: BUG FIX - Use getElementById for robust selection
+        const resultHashElem = document.getElementById('resultHash');
+        const resultTxHashElem = document.getElementById('resultTxHash');
+        // END: BUG FIX
+        
+        function showStatus(message, isSuccess) {
+            statusMessage.classList.remove('hidden');
+            statusMessage.textContent = message;
+            statusMessage.className = `p-3 rounded-lg mb-6 text-center font-semibold ${isSuccess ? 'bg-green-100 text-green-900' : 'bg-red-100 text-red-900'}`;
+        }
+
+        function toggleLoading(isLoading) {
+            submitButton.disabled = isLoading;
+            buttonText.textContent = isLoading ? 'Processing...' : 'Issue Certificate & Register Hash';
+            isLoading ? loadingSpinner.classList.remove('hidden') : loadingSpinner.classList.add('hidden');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            toggleLoading(true);
+            statusMessage.classList.add('hidden');
+            resultsDiv.classList.add('hidden');
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/api/admin/issue-certificate', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showStatus('✅ Success! Certificate hash registered on blockchain and metadata saved.', true);
+                    form.reset(); 
+                    
+                    // This will now work correctly because we are using specific IDs
+                    resultHashElem.textContent = result.hash;
+                    resultTxHashElem.textContent = result.txHash;
+                    resultsDiv.classList.remove('hidden');
+
+                    qrCodeContainer.innerHTML = `<img src="${result.qrCodePath}" alt="QR Code for Certificate Hash" class="w-40 h-40 object-cover" />`;
+
+                } else {
+                    showStatus(result.message || 'Issuance failed. Check server console for details.', false);
+                }
+            } catch (error) {
+                console.error('Network or system error:', error);
+                showStatus('Network error: Could not connect to the server.', false);
+            } finally {
+                toggleLoading(false);
+            }
+        });
+    </script>
+</body>
+</html>
