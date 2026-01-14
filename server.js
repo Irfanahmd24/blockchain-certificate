@@ -433,6 +433,9 @@ app.post('/api/verifier/verify-hash', async (req, res) => {
 // -----------------------------------------------------------
 // START SERVER
 // -----------------------------------------------------------
+app.get('/', (req, res) => {
+    res.send('Blockchain Certificate Verification Server is running 🚀');
+});
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
     console.log(`Public files served from: ${path.join(__dirname, 'public')}`);
