@@ -52,17 +52,18 @@ if (
 
 let registryContract;
 
-// Load Contract ABI (Assuming the build/contracts directory structure)
+// Load Contract ABI (Sepolia – clean ABI file)
+t// Load Contract ABI (Sepolia – clean ABI file)
 try {
-    const abiPath = path.join(__dirname, 'build/contracts/CertificateRegistry.json');
-    const CertificateRegistryABI = require(abiPath).abi;
-    registryContract = new web3.eth.Contract(CertificateRegistryABI, CONTRACT_ADDRESS);
-    console.log('[Web3] Contract loaded successfully.');
+    const CertificateRegistryABI = require('./abi/CertificateRegistry.json');
+    registryContract = new web3.eth.Contract(
+        CertificateRegistryABI,
+        CONTRACT_ADDRESS
+    );
+    console.log('[Web3] Contract loaded successfully (Sepolia).');
 } catch (e) {
-    console.error('[Web3] ERROR: Could not load contract ABI or connect to Web3. Ensure "build/contracts/CertificateRegistry.json" exists and Ganache is running.', e);
+    console.error('[Web3] ERROR: Could not load contract ABI from abi folder.', e);
 }
-
-
 // -----------------------------------------------------------
 // SIMULATED DATABASE SETUP (for Student Accounts and Certificate Metadata)
 // -----------------------------------------------------------
