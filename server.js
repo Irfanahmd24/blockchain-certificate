@@ -53,7 +53,7 @@ if (
 let registryContract;
 
 // Load Contract ABI (Sepolia – clean ABI file)
-t// Load Contract ABI (Sepolia – clean ABI file)
+// Load Contract ABI (Sepolia – clean ABI file)
 try {
     const CertificateRegistryABI = require('./abi/CertificateRegistry.json');
     registryContract = new web3.eth.Contract(
