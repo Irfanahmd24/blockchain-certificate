@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verifier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        #qr-reader { border: 2px dashed #d1d5db; border-radius: 0.5rem; }
+        .hidden-file-input { display: none; }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
+
+    <div class="w-full max-w-2xl bg-white p-8 rounded-xl shadow-2xl border border-purple-200">
+        <div class="text-center mb-6">
+            <i data-lucide="scan" class="w-12 h-12 mx-auto text-purple-600 mb-4"></i>
+            <h1 class="text-3xl font-bold text-gray-900">Certificate Verification Portal</h1>
+            <p class="mt-2 text-md text-gray-600">Enter the Certificate Hash, scan the QR code, or upload a QR image to verify.</p>
+        </div>
+
+        <div class="mb-4">
+            <div id="qr-reader" class="w-full mx-auto"></div>
+        </div>
+
+        <div class="flex items-center space-x-2 mb-4">
+            <div class="flex-grow border-t border-gray-200"></div>
+            <span class="flex-shrink text-sm text-gray-500">OR</span>
+            <div class="flex-grow border-t border-gray-200"></div>
+        </div>
+
+        <form id="verificationForm" class="space-y-4">
+            <div>
+                <label for="certificateHash" class="block text-sm font-medium text-gray-700">Certificate Hash</label>
+                <input type="text" id="certificateHash" name="certificateHash" required
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-purple-500 focus:border-purple-500 text-sm font-mono tracking-wider"
+                       placeholder="e.g., 0xfb8b7a4282e3c04d09d6f35a0f2b31a38a6a7c8b...">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button type="button" id="scanButton"
+                        class="w-full flex justify-center items-center py-3 px-4 border border-gray-300 rounded-lg shadow-md text-base font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <i data-lucide="camera" class="w-5 h-5 mr-2"></i>
+                    <span id="scanButtonText">Scan with Camera</span>
+                </button>
+                <label for="qrFileInput" class="w-full cursor-pointer flex justify-center items-center py-3 px-4 border border-gray-300 rounded-lg shadow-md text-base font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <i data-lucide="upload" class="w-5 h-5 mr-2"></i>
+                    <span>Upload QR Image</span>
+                </label>
+                <input type="file" id="qrFileInput" accept="image/*" class="hidden-file-input">
+            </div>
+
+            <button type="submit" id="submitButton"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-purple-600 hover:bg-purple-700">
+                <span id="buttonText">Verify Certificate</span>
+                <i id="spinner" data-lucide="search" class="w-5 h-5 ml-2"></i>
+            </button>
+        </form>
+
+        <div id="resultsArea" class="mt-8 pt-6 border-t border-gray-200 hidden">
+            <h2 id="resultTitle" class="text-2xl font-semibold mb-4 text-gray-800">Verification Result:</h2>
+            <div id="statusMessage" class="p-4 rounded-lg text-white font-medium mb-4 hidden"></div>
+            
+            <div id="certificateDetails" class="space-y-4 bg-gray-50 p-6 rounded-lg border hidden">
+                <h3 class="text-xl font-bold text-gray-900 border-b pb-2">Student & Document Details</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <p><strong>Name:</strong> <span id="detailName" class="font-semibold"></span></p>
+                    <p><strong>Roll No:</strong> <span id="detailRoll" class="font-semibold"></span></p>
+                    <p><strong>Department:</strong> <span id="detailDept"></span></p>
+                    <p><strong>Year of Pass:</strong> <span id="detailYear"></span></p>
+                    <p><strong>Issue Date:</strong> <span id="detailDate"></span></p>
+                </div>
+                <div class="pt-4 border-t border-gray-200 flex space-x-3">
+                    <a id="linkPdf" target="_blank" class="flex-1 inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700">
+                        <i data-lucide="file-text" class="w-4 h-4 mr-1"></i> View Original PDF
+                    </a>
+                    <a id="linkPhoto" target="_blank" class="flex-1 inline-flex items-center justify-center px-3 py-2 border border-blue-600 text-sm font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50">
+                        <i data-lucide="user-square" class="w-4 h-4 mr-1"></i> View Student Photo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="p-4 text-center text-gray-500 mt-8 text-xs">
+        © 2024 Certificate Registry System | Verifier Access is public.
+    </footer>
+
+    <script>
+        window.onload = function() {
+            try {
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                } else {
+                    console.error("Lucide library failed to load.");
+                }
+            } catch (e) {
+                console.error("Error initializing lucide icons:", e);
+            }
+        };
+        
+        const form = document.getElementById('verificationForm');
+        const certificateHashInput = document.getElementById('certificateHash');
+        const resultsArea = document.getElementById('resultsArea');
+        const statusMessage = document.getElementById('statusMessage');
+        const certificateDetails = document.getElementById('certificateDetails');
+        const submitButton = document.getElementById('submitButton');
+        const buttonText = document.getElementById('buttonText');
+        const spinnerIcon = document.getElementById('spinner');
+
+        const detailName = document.getElementById('detailName');
+        const detailRoll = document.getElementById('detailRoll');
+        const detailDept = document.getElementById('detailDept');
+        const detailYear = document.getElementById('detailYear');
+        const detailDate = document.getElementById('detailDate');
+        const linkPdf = document.getElementById('linkPdf');
+        const linkPhoto = document.getElementById('linkPhoto');
+
+        const scanButton = document.getElementById('scanButton');
+        const scanButtonText = document.getElementById('scanButtonText');
+        const qrFileInput = document.getElementById('qrFileInput');
+        let isScannerRunning = false;
+        const html5QrCode = new Html5Qrcode("qr-reader");
+
+        function showStatus(message, isSuccess) {
+            statusMessage.textContent = message;
+            statusMessage.classList.remove('hidden', 'bg-red-600', 'bg-green-600');
+            statusMessage.classList.add(isSuccess ? 'bg-green-600' : 'bg-red-600');
+            statusMessage.classList.remove('hidden');
+        }
+
+        function toggleLoading(isLoading) {
+            submitButton.disabled = isLoading;
+            buttonText.textContent = isLoading ? 'Verifying...' : 'Verify Certificate';
+            spinnerIcon.classList.toggle('animate-spin', isLoading);
+            spinnerIcon.setAttribute('data-lucide', isLoading ? 'loader-2' : 'search');
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+        
+        function clearResults() {
+            resultsArea.classList.add('hidden');
+            statusMessage.classList.add('hidden');
+            certificateDetails.classList.add('hidden');
+        }
+
+        const onScanSuccess = (decodedText) => {
+            console.log(`Scan successful: ${decodedText}`);
+            certificateHashInput.value = decodedText;
+            if (isScannerRunning) {
+                html5QrCode.stop().then(() => {
+                    scanButtonText.textContent = 'Scan with Camera';
+                    isScannerRunning = false;
+                });
+            }
+            submitButton.click();
+        };
+
+        scanButton.addEventListener('click', () => {
+            if (isScannerRunning) {
+                html5QrCode.stop().then(() => scanButtonText.textContent = 'Scan with Camera');
+            } else {
+                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+                html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess)
+                    .then(() => scanButtonText.textContent = 'Stop Scanning');
+            }
+            isScannerRunning = !isScannerRunning;
+        });
+
+        qrFileInput.addEventListener('change', e => {
+            if (e.target.files.length === 0) return;
+            html5QrCode.scanFile(e.target.files[0], true)
+                .then(onScanSuccess)
+                .catch(err => alert(`Error scanning file: ${err}`));
+        });
+
+        // START: RESTORED AND CORRECTED FORM SUBMISSION LOGIC
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearResults();
+            toggleLoading(true);
+
+            const hash = certificateHashInput.value.trim();
+            if (!hash || !hash.startsWith('0x') || hash.length !== 66) {
+                showStatus('Invalid hash format. Please enter a valid 0x-prefixed 66-character hash.', false);
+                toggleLoading(false);
+                return;
+            }
+
+            resultsArea.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`/api/verifier/verify-hash`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ certificateHash: hash })
+                });
+
+                const result = await response.json();
+
+                if (result.success && result.status === 'VALID') {
+                    showStatus('✅ Verification Successful: Certificate hash is valid and registered on the blockchain.', true);
+                    
+                    const meta = result.metadata;
+                    detailName.textContent = meta.studentName || 'N/A';
+                    detailRoll.textContent = meta.studentId || 'N/A';
+                    detailDept.textContent = meta.department || 'N/A';
+                    detailYear.textContent = meta.yearOfPass || 'N/A';
+                    detailDate.textContent = meta.issueDate || 'N/A';
+                    linkPdf.href = meta.pdfDownloadUrl || '#';
+                    linkPhoto.href = meta.photoFilePath || '#';
+
+                    certificateDetails.classList.remove('hidden');
+                } else {
+                    showStatus(result.message || '❌ Verification Failed: Certificate hash not found or is invalid.', false);
+                }
+            } catch (error) {
+                console.error('Verification Error:', error);
+                showStatus('Network error. Could not connect to the server.', false);
+            } finally {
+                toggleLoading(false);
+            }
+        });
+        // END: RESTORED AND CORRECTED FORM SUBMISSION LOGIC
+    </script>
+</body>
+</html>

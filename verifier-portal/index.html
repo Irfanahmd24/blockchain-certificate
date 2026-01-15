@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Chain - Secure Certificate Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        html {
+            scroll-behavior: smooth;
+        }
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: #0d9488; /* Fallback */
+            background-image: linear-gradient(to right bottom, #06b6d4, #22c55e); 
+        }
+        .cta-button {
+            background-image: linear-gradient(to right, #ec4899, #f97316);
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <header class="absolute top-0 left-0 right-0 p-6 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i data-lucide="link" class="w-8 h-8 text-white"></i>
+                <span class="text-xl font-bold">Certificate Chain</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="min-h-screen flex items-center justify-center text-center px-4">
+        <div class="max-w-4xl">
+            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight">
+                Manage & Verify Certificates on the Blockchain
+            </h1>
+            <p class="mt-6 text-lg md:text-xl text-white/80 max-w-2xl mx-auto">
+                Certificate Chain provides an immutable, secure, and transparent platform for issuing and verifying academic and professional certificates using the power of blockchain technology.
+            </p>
+            <a href="#portals" class="cta-button inline-block mt-10 px-8 py-4 text-lg font-bold text-white rounded-full shadow-lg hover:scale-105 transition-transform duration-300">
+                Get Started &rarr;
+            </a>
+        </div>
+    </section>
+
+    <section class="py-20 sm:py-32 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Key Features of Certificate Chain</h2>
+            <p class="text-lg text-white/70 mb-16 max-w-2xl mx-auto">Our platform is built to provide trust and efficiency for institutions and individuals alike.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-pink-500 to-orange-400 shadow-xl">
+                    <i data-lucide="shield-check" class="w-12 h-12 mb-4 text-white"></i>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Immutable Verification</h3>
+                    <p class="text-white/80">Once a certificate is registered on the blockchain, its authenticity can be verified forever. It cannot be altered or forged.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-pink-500 to-orange-400 shadow-xl">
+                    <i data-lucide="award" class="w-12 h-12 mb-4 text-white"></i>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Effortless Issuance</h3>
+                    <p class="text-white/80">The admin panel allows educational institutions to easily issue new certificates, generating a unique cryptographic hash for each one.</p>
+                </div>
+                <div class="p-8 rounded-2xl bg-gradient-to-br from-pink-500 to-orange-400 shadow-xl">
+                    <i data-lucide="users" class="w-12 h-12 mb-4 text-white"></i>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Instant Accessibility</h3>
+                    <p class="text-white/80">Students can access their digital certificates anytime from their personal portal, ready to be shared with employers or other institutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portals" class="py-20 sm:py-32 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-12">Access Your Portal</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <a href="/admin/admin_dashboard.html" class="block">
+                    <div class="p-8 rounded-2xl h-full flex flex-col items-center text-center bg-gradient-to-br from-pink-500 to-orange-400 hover:-translate-y-2 transition-transform duration-300 shadow-xl">
+                        <img src="/imgs/admin.png" alt="Admin Panel Icon" class="w-16 h-16 mb-4">
+                        <h3 class="text-2xl font-bold mb-2 text-white">Admin Panel</h3>
+                        <p class="text-white/80 mb-6 flex-grow">Issue certificates, upload documents, and manage student accounts.</p>
+                        <span class="mt-auto font-bold text-white inline-block px-6 py-2 rounded-full bg-white/20">Enter Admin &rarr;</span>
+                    </div>
+                </a>
+
+                <a href="/verifier/verify_certificate.html" class="block">
+                    <div class="p-8 rounded-2xl h-full flex flex-col items-center text-center bg-gradient-to-br from-pink-500 to-orange-400 hover:-translate-y-2 transition-transform duration-300 shadow-xl">
+                        <img src="/imgs/verifier.png" alt="Verifier Icon" class="w-16 h-16 mb-4">
+                        <h3 class="text-2xl font-bold mb-2 text-white">Verifier</h3>
+                        <p class="text-white/80 mb-6 flex-grow">Verify the authenticity of a certificate using its cryptographic hash or QR code.</p>
+                        <span class="mt-auto font-bold text-white inline-block px-6 py-2 rounded-full bg-white/20">Enter Verifier &rarr;</span>
+                    </div>
+                </a>
+                
+                <a href="/student/login.html" class="block">
+                    <div class="p-8 rounded-2xl h-full flex flex-col items-center text-center bg-gradient-to-br from-pink-500 to-orange-400 hover:-translate-y-2 transition-transform duration-300 shadow-xl">
+                        <img src="/imgs/student.png" alt="Student Portal Icon" class="w-16 h-16 mb-4">
+                        <h3 class="text-2xl font-bold mb-2 text-white">Student Portal</h3>
+                        <p class="text-white/80 mb-6 flex-grow">Log in to view, download, and share your officially issued certificates.</p>
+                        <span class="mt-auto font-bold text-white inline-block px-6 py-2 rounded-full bg-white/20">Enter Student &rarr;</span>
+                    </div>
+                </a>
+                </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center text-white/60">
+        <div class="container mx-auto">
+            © 2025 Certificate Chain | A Secure Student Portal
+        </div>
+    </footer>
+    
+    <script>
+        window.onload = function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+node_modules/
+.env
+cache/
+*.log
+student_db.json
+public/certificates/
+public/imgs/

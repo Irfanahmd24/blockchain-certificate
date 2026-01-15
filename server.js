@@ -18,9 +18,14 @@ const QRCode = require('qrcode');
 const Web3 = require('web3').default;
 const bcrypt = require('bcrypt');
 
+const connectDB = require('./db'); // ✅ FIXED
+
 const app = express();
+connectDB();
+
 const PORT = process.env.PORT || 3000;
-const SALT_ROUNDS = 10; // For bcrypt hashing
+const SALT_ROUNDS = 10;
+
 
 // Middleware Setup
 app.use(bodyParser.json());
@@ -31,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // -----------------------------------------------------------
 // BLOCKCHAIN AND WEB3 SETUP
 // -----------------------------------------------------------
-const SEPOLIA_RPC = process.env.RPC_URL;
+const SEPOLIA_RPC = process.env.SEPOLIA_RPC_URL;
 // Initialize Web3 instance
 const web3 = new Web3(SEPOLIA_RPC);
 // !!! DEPLOYMENT DETAILS - IMPORTANT: Update these based on your deployed contract !!!
@@ -197,6 +202,23 @@ app.post('/api/admin/issue-certificate', upload.fields([{ name: 'pdfFile', maxCo
     try {
         const hashHex = await hashFile(pdfPath);
         certHash = '0x' + hashHex;
+        // 🔴 PREVENT DUPLICATE CERTIFICATES (IMPORTANT)
+const alreadyIssued = await registryContract.methods
+    .verifyCertificate(certHash)
+    .call();
+
+if (alreadyIssued) {
+    // Cleanup uploaded files
+    if (fs.existsSync(pdfPath)) fs.unlinkSync(pdfPath);
+    if (fs.existsSync(photoPath)) fs.unlinkSync(photoPath);
+    if (qrCodeFullPath && fs.existsSync(qrCodeFullPath)) fs.unlinkSync(qrCodeFullPath);
+
+    return res.status(400).json({
+        success: false,
+        message: 'Certificate already issued'
+    });
+}
+
         await QRCode.toFile(qrCodeFullPath, certHash);
 
         if (!registryContract) {
@@ -257,13 +279,6 @@ return res.json({
   txHash: 'pending',
   qrCodePath: `/${qrCodeRelativePath.replace(/\\/g, '/')}`
 });
-        res.json({
-            success: true,
-            message: 'Certificate issued and blockchain transaction confirmed.',
-            hash: certHash,
-            txHash: receipt.transactionHash,
-            qrCodePath: `/${qrCodeRelativePath.replace(/\\/g, '/')}`
-        });
     } catch (error) {
         console.error('Certificate Issuance Error:', error);
         if (pdfPath && fs.existsSync(pdfPath)) fs.unlinkSync(pdfPath);
