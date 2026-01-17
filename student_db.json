@@ -1,0 +1,211 @@
+{
+    "123": {
+        "mailId": "123@gamil.com",
+        "hashedPassword": "$2b$10$8CF6hj1qpa/tlkIgTQnBeOlxUYpIqvigCb9phEqZFBFOB6dzzXnAO",
+        "studentName": "ABC",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "Pass",
+        "certificates": [
+            {
+                "certificateHash": "0xa39657210370dcec239acc82e81439ab929c10c379d6272dad97f97da452bb90",
+                "pdfFilePath": "/certificates/1768295339265-images.pdf",
+                "photoFilePath": "/imgs/1768295339268-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/123-1768295339270.png",
+                "blockchainTxHash": "0x62acf00efc99bbffaac52a2ef5b9e0a6ec7fec88cb93a3cec9c56699d0896010",
+                "issueTimestamp": "2026-01-13T09:10:08.808Z"
+            }
+        ]
+    },
+    "1234": {
+        "mailId": "1234@gmail.com",
+        "hashedPassword": "$2b$10$ZquQ8NRsyAZUVrAiCaOjLuyVY5U19cH4Lb8I9ppA/kjMvMniFs8oC",
+        "studentName": "ABCD",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0x8ad0896077f7968da1180e8d5e4337bcf382449380bc3a067a29ebdbe40bb27c",
+                "pdfFilePath": "/certificates/1768296307862-NM_Certificate.pdf",
+                "photoFilePath": "/imgs/1768296307876-1600w-EGdARaue78g.webp",
+                "qrCodePath": "/imgs/qrcodes/1234-1768296307879.png",
+                "blockchainTxHash": "0x188f5e7c3d04c9fcc52e336a6b664913744e7ff358c090e63104d3486ddb6d7f",
+                "issueTimestamp": "2026-01-13T09:28:31.787Z"
+            }
+        ]
+    },
+    "8120": {
+        "mailId": "abcf@gmail.com",
+        "hashedPassword": "$2b$10$fX4k3P8iEGycBcC9JKfbBewYzW2.xtMTUlqBOvmViUZEFWLZbY9xK",
+        "studentName": "abcf",
+        "studentClass": "First Class",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0xd4098cfea106df7e74683c711b64cbb495cdfac8c6ac7fb42ceaf537e8961d6b",
+                "pdfFilePath": "/certificates/1768310175500-Irfan_Resume_.pdf",
+                "photoFilePath": "/imgs/1768310175501-cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI0LTEyL3Jhd3BpeGVsb2ZmaWNlMl9waG90b19vZl95b3VuZ19pbmRpYW5fbWFuX3dpdGhfc3R1ZGVudF9iYWNrcGFja19hNzY0YWE5NS1kNTRhLTRiNWMtYTkyNC00MGNjNjE0OTlhNzctbTRpOG44MDQucG5n.webp",
+                "qrCodePath": "/imgs/qrcodes/8120-1768310175505.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-13T13:16:21.219Z"
+            }
+        ]
+    },
+    "812022": {
+        "mailId": "812022@gmail.com",
+        "hashedPassword": "$2b$10$fiDSSouIphxrnQCl6CR.IOuQDCWjtOZUrF0nEmkO9HqGBi/mh05zu",
+        "studentName": "qwerty",
+        "studentClass": "First Class",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0x2e6453e3c57a496bb38c03f0f6a4f88a7624ae52f8d3bc57cf3a6d3b583bee99",
+                "pdfFilePath": "/certificates/1768311014845-images_(2).pdf",
+                "photoFilePath": "/imgs/1768311014847-1600w-EGdARaue78g.webp",
+                "qrCodePath": "/imgs/qrcodes/812022-1768311014849.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-13T13:30:19.046Z"
+            }
+        ]
+    },
+    "812022205026": {
+        "mailId": "lokesh@gmail.com",
+        "hashedPassword": "$2b$10$Qie7ZTUEgJ6Nevdtpx8dX.NUSUoXfPhClIXXwOlsSrOe.j1RB5r6a",
+        "studentName": "lokesh",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0x7fc59f7d7397e045aef2434f399b7f9d40de21e49e6aef4747c6da1fbbf8dd41",
+                "pdfFilePath": "/certificates/1768295159254-images_(1).pdf",
+                "photoFilePath": "/imgs/1768295159256-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/812022205026-1768295159261.png",
+                "blockchainTxHash": "0x95b2d7764d906e206f3d2f5be37a274903062bb3ccb112ab346c2081d812ddfd",
+                "issueTimestamp": "2026-01-13T09:07:20.055Z"
+            }
+        ]
+    },
+    "012": {
+        "mailId": "012@gmail.com",
+        "hashedPassword": "$2b$10$IB4RU57fwFekyyfZZcQc5e6GT6MIR8i1YyRI1DySPoRo6ZOLBA0TG",
+        "studentName": "asdf",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0x7dc8b1aa5537943a8784e99a43149b3b10110adf5c69afaa58a90221f5e3c2b9",
+                "pdfFilePath": "/certificates/1768364948463-NM_Certificate_(2).pdf",
+                "photoFilePath": "/imgs/1768364948470-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/012-1768364948473.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-14T04:29:12.474Z"
+            }
+        ]
+    },
+    "001": {
+        "mailId": "001@gmail.com",
+        "hashedPassword": "$2b$10$Ta1azjb01B2QvKPxOe8a3.Arr2eR85PyOxFR6V7uURm8aCsD.gQnS",
+        "studentName": "001",
+        "studentClass": "First Class",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0xf2a07483a50de970a4ae683db2d81482d49ba5a1c79322743cdec2a4de53d1af",
+                "pdfFilePath": "/certificates/1768465301195-images_(3).pdf",
+                "photoFilePath": "/imgs/1768465301197-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/001-1768465301200.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-15T08:21:42.741Z"
+            }
+        ]
+    },
+    "002": {
+        "mailId": "002@gmail.com",
+        "hashedPassword": "$2b$10$wtV00aBTxO6ewdRxYvssg.iVcMOstc3zcSXAQvivXDUtwp71ulz7y",
+        "studentName": "002",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0xf2a07483a50de970a4ae683db2d81482d49ba5a1c79322743cdec2a4de53d1af",
+                "pdfFilePath": "/certificates/1768465399759-images_(3).pdf",
+                "photoFilePath": "/imgs/1768465399761-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/002-1768465399763.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-15T08:23:21.348Z"
+            }
+        ]
+    },
+    "003": {
+        "mailId": "003@gmail.com",
+        "hashedPassword": "$2b$10$sfb02L/dU3KkHrBtzrKUte8x/E7w2uvd8xtcsgdL9WHgOpkfsV37K",
+        "studentName": "003",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0xfe03755b422c6b317c8dc8c5f72ae33ae930ec016e7d569ad42c9734b2d0fd7f",
+                "pdfFilePath": "/certificates/1768469402771-68747470733a2f2f626c6f676765722e676f6f676c6575736572636f6e74656e742e636f6d2f696d672f622f523239765a32786c2f415676587345696d736f52696c534d5367776c566170553141344762742d6d363544755a51566b7831464a38654f757631524.pdf",
+                "photoFilePath": "/imgs/1768469402780-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/003-1768469402785.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-15T09:30:07.728Z"
+            }
+        ]
+    },
+    "004": {
+        "mailId": "004@gmail.com",
+        "hashedPassword": "$2b$10$sONJ4fM858vqRNGpbo74buOrQb4A.WjTVM09UGzYRToPlW.fpECJS",
+        "studentName": "004",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0xfe03755b422c6b317c8dc8c5f72ae33ae930ec016e7d569ad42c9734b2d0fd7f",
+                "pdfFilePath": "/certificates/1768636160325-68747470733a2f2f626c6f676765722e676f6f676c6575736572636f6e74656e742e636f6d2f696d672f622f523239765a32786c2f415676587345696d736f52696c534d5367776c566170553141344762742d6d363544755a51566b7831464a38654f757631524.pdf",
+                "photoFilePath": "/imgs/1768636160329-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/004-1768636160332.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-17T07:49:25.622Z"
+            }
+        ]
+    },
+    "05": {
+        "mailId": "05@gmail.com",
+        "hashedPassword": "$2b$10$r0K7nTGH1K/CxvMtBD7hxe2o5Y.dypet2vIMtJF6RfeN/I7j.1ASS",
+        "studentName": "05",
+        "studentClass": "Pass",
+        "department": "IT",
+        "yearOfPass": 2026,
+        "percentage": "9",
+        "certificates": [
+            {
+                "certificateHash": "0xf2a07483a50de970a4ae683db2d81482d49ba5a1c79322743cdec2a4de53d1af",
+                "pdfFilePath": "/certificates/1768636275159-images_(3).pdf",
+                "photoFilePath": "/imgs/1768636275160-Screenshot_16-12-2025_103222_www.bing.com.jpeg",
+                "qrCodePath": "/imgs/qrcodes/05-1768636275167.png",
+                "blockchainTxHash": "pending",
+                "issueTimestamp": "2026-01-17T07:51:20.022Z"
+            }
+        ]
+    }
+}
