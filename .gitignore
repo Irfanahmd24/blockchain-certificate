@@ -2,5 +2,3 @@ node_modules/
 .env
 cache/
 *.log
-public/certificates/
-public/imgs/
