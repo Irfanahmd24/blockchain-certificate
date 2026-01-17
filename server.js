@@ -200,8 +200,8 @@ app.post('/api/admin/issue-certificate', upload.fields([{ name: 'pdfFile', maxCo
     let qrCodeFullPath = path.join(qrDir, qrCodeFilename);
 
     try {
-        const hashHex = await hashFile(pdfPath);
-        certHash = '0x' + hashHex;
+        const hashHex = await hashFile(pdfPath);        // sha256 of PDF
+const certHash = web3.utils.keccak256(hashHex); // ✅ bytes32
         // 🔴 PREVENT DUPLICATE CERTIFICATES (IMPORTANT)
 const alreadyIssued = await registryContract.methods
     .verifyCertificate(certHash)
