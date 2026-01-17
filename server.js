@@ -41,7 +41,7 @@ const SEPOLIA_RPC = process.env.SEPOLIA_RPC_URL;
 const web3 = new Web3(SEPOLIA_RPC);
 // !!! DEPLOYMENT DETAILS - IMPORTANT: Update these based on your deployed contract !!!
 // IMPORTANT: These must match the address of your deployed CertificateRegistry contract
-const CONTRACT_ADDRESS = '0xcdc798b52c7feac10cf67696d97ecec321ebf46b';
+const CONTRACT_ADDRESS = '0x905FE1cCCa5281d03F9e849De71d382B9f17D989';
 const ADMIN_WALLET = '0x89E6BDb6d3B9f79d4d82E032C3eC7C67D8F4cD10';
  // Admin's public key (must match contract owner)
 const ADMIN_PRIVATE_KEY = process.env.PRIVATE_KEY;
