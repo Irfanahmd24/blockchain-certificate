@@ -392,6 +392,15 @@ app.post('/api/verifier/verify-hash', async (req, res) => {
         if (!registryContract) {
             throw new Error("Blockchain contract not initialized. Check Web3 setup.");
         }
+        const exists = await registryContract.methods.verifyCertificate(certificateHash).call();
+
+if (!exists) {
+  return res.json({
+    success: true,
+    status: 'INVALID',
+    message: 'Certificate not found on blockchain'
+  });
+}
 
         const details = await registryContract.methods.getCertificateDetails(certificateHash).call();
         
